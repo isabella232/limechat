@@ -283,15 +283,10 @@
     [self restorePosition];
 }
 
-- (void)expandImage:(NSString*)url lineNumber:(int)aLineNumber imageIndex:(int)imageIndex contentLength:(long long)contentLength contentType:(NSString*)contentType
+- (void)expandImage:(NSString*)url lineNumber:(int)aLineNumber imageIndex:(int)imageIndex contentLength:(long long)contentLength
 {
     if (!_loaded) return;
     
-    if (![ImageURLParser isImageContent:contentType]) {
-        LOG(@"Ignore non-image image URL: %@ (%@)", url, contentType);
-        return;
-    }
-
     if (contentLength > INLINE_IMAGE_MAX_SIZE) {
         LOG(@"Ignore too big image: %@ (%qi bytes)", url, contentLength);
         return;
@@ -564,7 +559,7 @@
 
             if ([ImageURLParser isImageFileURL:url]) {
                 isFileURL = YES;
-                if (![url hasPrefix:@"http://gyazo.com/"]) {
+                if (![url hasPrefix:@"http://gyazo.com/"] && ![url hasPrefix:@"http://httpcats.herokuapp.com"]) {
                     checkingSize = YES;
                     [[ImageDownloadManager instance] checkImageSize:url client:_client channel:_channel lineNumber:_lineNumber imageIndex:imageIndex];
                 }

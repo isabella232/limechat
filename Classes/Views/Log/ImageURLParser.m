@@ -17,14 +17,6 @@
     || [lowerUrl hasSuffix:@".svg"];
 }
 
-+ (BOOL)isImageContent:(NSString*)contentType
-{
-    return [contentType isEqual:@"image/jpeg"]
-    || [contentType isEqual:@"image/png"]
-    || [contentType isEqual:@"image/svg+xml"]
-    || [contentType isEqual:@"image/gif"];
-}
-
 + (NSString*)serviceImageURLForURL:(NSString*)url
 {
     NSString* encodedUrl = [url encodeURIFragment];
@@ -208,6 +200,9 @@
                 return [NSString stringWithFormat:@"http://image.movapic.com/pic/t_%@.jpeg", s];
             }
         }
+    }
+    else if ([host hasSuffix:@"trafficland.com"]) {
+        return url;
     }
     else if ([host hasSuffix:@"youtube.com"] || [host isEqualToString:@"youtu.be"]) {
         NSString* vid = nil;

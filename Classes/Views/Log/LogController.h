@@ -45,7 +45,7 @@
 - (void)reloadTheme;
 - (void)clear;
 - (void)changeTextSize:(BOOL)bigger;
-- (void)expandImage:(NSString*)url lineNumber:(int)aLineNumber imageIndex:(int)imageIndex contentLength:(long long)contentLength contentType:(NSString*)contentType;
+- (void)expandImage:(NSString*)url lineNumber:(int)aLineNumber imageIndex:(int)imageIndex contentLength:(long long)contentLength;
 
 - (BOOL)print:(LogLine*)line;
 

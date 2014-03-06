@@ -56,7 +56,7 @@ static ImageDownloadManager* _instance;
 
 #pragma mark - ImageSizeCheckClient Delegate
 
-- (void)imageSizeCheckClient:(ImageSizeCheckClient*)sender didReceiveContentLength:(long long)contentLength andType:(NSString*)contentType
+- (void)imageSizeCheckClient:(ImageSizeCheckClient*)sender didReceiveContentLength:(long long)contentLength
 {
     [_checkers removeObject:sender];
 
@@ -78,7 +78,7 @@ static ImageDownloadManager* _instance;
     }
 
     if (log) {
-        [log expandImage:sender.url lineNumber:sender.lineNumber imageIndex:sender.imageIndex contentLength:contentLength contentType:contentType];
+        [log expandImage:sender.url lineNumber:sender.lineNumber imageIndex:sender.imageIndex contentLength:contentLength];
     }
 }
 
