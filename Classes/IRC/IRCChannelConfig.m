@@ -42,7 +42,13 @@
         _channelID = [dic stringForKey:@"channelID"] ?: [NSString lcf_uuidString];
 
         _name = [dic stringForKey:@"name"] ?: @"";
-        _password = [dic stringForKey:@"password"] ?: [Keychain genericPasswordWithAccountName:[self passwordKey] serviceName:[self keychainServiceName]] ?: @"";
+        _password = [dic stringForKey:@"password"];
+        if (!_password) {
+            _password = [Keychain genericPasswordWithAccountName:[self passwordKey] serviceName:[self keychainServiceName]];
+            if (!_password) {
+                _password = @"";
+            }
+        }
 
         _autoJoin = [dic boolForKey:@"auto_join"];
         _logToConsole = [dic boolForKey:@"console"];
@@ -60,7 +66,7 @@
     return self;
 }
 
-- (NSMutableDictionary*)dictionaryValue
+- (NSMutableDictionary*)dictionaryValueSavingToKeychain:(BOOL)saveToKeychain
 {
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
 
@@ -73,10 +79,10 @@
 #ifdef DEBUG_BUILD
     useKeychain = NO;
 #endif
-    if (_password.length && useKeychain) {
+    if (useKeychain && saveToKeychain && _password.length) {
         [Keychain setGenericPassword:_password accountName:[self passwordKey] serviceName:[self keychainServiceName]];
-    } else if (_password) {
-        [dic setObject:_password forKey:@"password"];
+    } else {
+        [dic setObject:_password ?: @"" forKey:@"password"];
     }
 
     [dic setBool:_autoJoin forKey:@"auto_join"];
@@ -93,7 +99,12 @@
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    return [[IRCChannelConfig alloc] initWithDictionary:[self dictionaryValue]];
+    return [[IRCChannelConfig alloc] initWithDictionary:[self dictionaryValueSavingToKeychain:NO]];
+}
+
+- (void)deletePasswordsFromKeychain
+{
+    [Keychain deleteGenericPasswordWithAccountName:[self passwordKey] serviceName:[self keychainServiceName]];
 }
 
 - (NSString*)keychainServiceName
