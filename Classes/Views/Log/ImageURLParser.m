@@ -201,6 +201,9 @@
             }
         }
     }
+    else if ([host hasSuffix:@"maps.google.com" ] && [path isEqualToString:@"/maps/api/staticmap"] ) {
+        return url;
+    }
     else if ([host hasSuffix:@"trafficland.com"]) {
         return url;
     }
